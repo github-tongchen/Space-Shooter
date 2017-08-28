@@ -34,6 +34,7 @@ public class DestroyByContact : MonoBehaviour
         }
         if (explosion != null)
         {
+            Debug.Log("执行了");
             //  行星或者敌机的爆炸效果
             Instantiate(explosion, transform.position, transform.rotation);
         }

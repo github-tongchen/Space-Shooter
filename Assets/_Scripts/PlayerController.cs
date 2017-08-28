@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //  检测左Ctrl键
         if (Input.GetButton("Fire1") && Time.time > nextFire)
         {
             nextFire = Time.time + fireRate;

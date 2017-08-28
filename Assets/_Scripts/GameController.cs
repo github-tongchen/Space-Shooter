@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
 {
 
     //  障碍物
-    public GameObject hazard;
-    public Vector3 spawnValue;
+    public GameObject[] hazards;
+    public Vector3 spawnValues;
     //  每一波行星的个数
-    public int spawnCount;
+    public int hazardCount;
     //  每两个行星之间的时间间隔
     public float spawnWait;
     //  开始生成行星的等待时间
@@ -19,11 +19,10 @@ public class GameController : MonoBehaviour
     //  每两波行星之间的时间间隔
     public float waveWait;
 
-    public Text scoreText;
+    public Text scoreText, restartText, gameOverText;
     private int score;
 
-    public Text restartText, gameOverText;
-    public bool restart, gameOver;
+    private bool restart, gameOver;
 
     void Start()
     {
@@ -41,7 +40,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (restart == true)
+        if (restart)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
@@ -56,9 +55,10 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(startWait);
         while (true)
         {
-            for (int i = 0; i < spawnCount; i++)
+            for (int i = 0; i < hazardCount; i++)
             {
-                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValue.x, spawnValue.x), spawnValue.y, spawnValue.z);
+                GameObject hazard = hazards[Random.Range(0,hazards.Length)];
+                Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 //  不旋转
                 Quaternion spawnRotation = Quaternion.identity;
                 Instantiate(hazard, spawnPosition, spawnRotation);
@@ -67,10 +67,11 @@ public class GameController : MonoBehaviour
             }
             yield return new WaitForSeconds(waveWait);
 
-            if (gameOver == true)
+            if (gameOver)
             {
                 restartText.text = "按下'R'键重新开始";
                 restart = true;
+                break;
             }
         }
     }

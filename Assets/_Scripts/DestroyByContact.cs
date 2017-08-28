@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyByContact : MonoBehaviour
 {
-    //  行星爆炸
+    //  爆炸
     public GameObject explosion;
     //  飞船爆炸
     public GameObject playerExplosion;
@@ -28,12 +28,15 @@ public class DestroyByContact : MonoBehaviour
     //  当行星发生碰撞时，销毁。Destroy不会马上销毁指定的对象，而是将它们标记为要被销毁的对象，所有被标记的对象会在每一帧结束时销毁
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Boundary")
+        if (other.tag == "Boundary" || other.tag == "Enemy")
         {
             return;
         }
-        //  行星的爆炸效果
-        Instantiate(explosion, transform.position, transform.rotation);
+        if (explosion != null)
+        {
+            //  行星或者敌机的爆炸效果
+            Instantiate(explosion, transform.position, transform.rotation);
+        }
 
         if (other.tag == "Player")
         {

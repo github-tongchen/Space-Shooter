@@ -1,3 +1,3 @@
-#Space Shooter
+# Space Shooter
 
-###����Unity�ٷ���Ƶ��Դ����ɵĴ�ɻ�С��Ϸ��
+### 对照Unity官方视频和源码完成的打飞机小游戏。

@@ -31,16 +31,16 @@ public class PlayerController : MonoBehaviour
             GetComponent<AudioSource>().Play();
         }*/
 
-        if (Input.touchCount > 0)//如果存在Touch事件  
+        if (Input.touchCount > 0 && Time.time > nextFire)//如果存在Touch事件  
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)//相当于TouchDown  
-            {
+            //if (Input.GetTouch(0).phase == TouchPhase.Began)//相当于TouchDown  
+            //{
                 nextFire = Time.time + fireRate;
                 Instantiate(shot, shotSpawn.position, shotSpawn.rotation);
                 GetComponent<AudioSource>().Play();
-            }
+            //}
         }
-        
+
     }
 
     void FixedUpdate()
@@ -66,8 +66,8 @@ public class PlayerController : MonoBehaviour
         rigidbody.rotation = Quaternion.Euler(0.0f, 0.0f, -rigidbody.velocity.x * tilt);
         */
 
-        //  跟随鼠标
-        gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0, 0, 10));
+        //  跟随鼠标，使飞船在手指前方一点
+        gameObject.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + new Vector3(0, 80,0));
 
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         //  控制飞船不会飞出屏幕

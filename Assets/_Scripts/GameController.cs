@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour
     //  每两波行星之间的时间间隔
     public float waveWait;
 
-    public Text scoreText, restartText, gameOverText;
+    public Text scoreText, exitText, restartText, gameOverText;
     private int score;
 
     private bool restart, gameOver;
@@ -31,33 +31,42 @@ public class GameController : MonoBehaviour
         restartText.text = "";
         gameOverText.text = "";
 
-
         score = 0;
         UpdateScore();
         //  协同
         StartCoroutine(SpawnWaves());
+
+        restartText.GetComponentInChildren<Button>().onClick.AddListener(delegate ()
+        {
+            Restart();
+        });
+
+        exitText.GetComponentInChildren<Button>().onClick.AddListener(delegate ()
+        {
+            Exit();
+        });
     }
 
     void Update()
     {
-        if (restart)
-        {
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene("Main");
-            }
-        }
+        //if (restart)
+        //{
+        //    if (Input.GetKeyDown(KeyCode.R))
+        //    {
+        //        SceneManager.LoadScene("Main");
+        //    }
+        //}
     }
 
     IEnumerator SpawnWaves()
     {
         //  等待startWait秒后开始生成行星
         yield return new WaitForSeconds(startWait);
-        while (true)
+        while (!gameOver)
         {
             for (int i = 0; i < hazardCount; i++)
             {
-                GameObject hazard = hazards[Random.Range(0,hazards.Length)];
+                GameObject hazard = hazards[Random.Range(0, hazards.Length)];
                 Vector3 spawnPosition = new Vector3(Random.Range(-spawnValues.x, spawnValues.x), spawnValues.y, spawnValues.z);
                 //  不旋转
                 Quaternion spawnRotation = Quaternion.identity;
@@ -69,8 +78,8 @@ public class GameController : MonoBehaviour
 
             if (gameOver)
             {
-                restartText.text = "按下'R'键重新开始";
-                restart = true;
+                restartText.text = "Restart";
+                //restart = true;
                 break;
             }
         }
@@ -81,7 +90,7 @@ public class GameController : MonoBehaviour
         score += scoreValue;
         UpdateScore();
     }
-    void UpdateScore()
+    private void UpdateScore()
     {
         scoreText.text = "Score:" + score;
     }
@@ -90,5 +99,16 @@ public class GameController : MonoBehaviour
     {
         gameOverText.text = "Game Over";
         gameOver = true;
+    }
+
+    private void Restart()
+    {
+        SceneManager.LoadScene("Main");
+        gameOver = false;
+    }
+
+    private void Exit()
+    {
+        Application.Quit();
     }
 }
